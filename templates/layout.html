@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>RSMS | {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <a href="{{ url_for('dashboard') }}" class="navbar-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Your Company Logo">
+        </a>
+
+        <!-- Main Navigation Links -->
+        <ul>
+            {% if current_user.is_authenticated %}
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Bookings</a>
+                <div class="dropdown-content">
+                    <!-- 
+                        FIXED: This link now points to the 'available_spaces' page, 
+                        which allows users to see spaces before booking.
+                    -->
+                    <a href="{{ url_for('book_space') }}">Book a Space</a>
+                    <a href="{{ url_for('list_bookings') }}">Booking Details</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Reports</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('available_spaces') }}">Space Tracking</a>
+                    <a href="{{ url_for('client_revenue') }}">Income by Vendor</a>
+                    <a href="{{ url_for('income_by_space') }}">Income by Space</a>
+                </div>
+            </li>
+            {% endif %}
+
+            {% if current_user.is_authenticated and current_user.role == 'admin' %}
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Settings</a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('list_locations') }}">Space Management</a>
+                    <a href="{{ url_for('list_clients') }}">Vendor Management</a>
+                    <a href="{{ url_for('list_users') }}">User Management</a>
+                    <a href="{{ url_for('list_audit_logs') }}">Audit Log</a>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+
+        <!-- User Account Dropdown (pushed to the right) -->
+        {% if current_user.is_authenticated %}
+        <div class="navbar-right">
+            <div class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn user-menu">
+                    {{ current_user.full_name }} <i class="arrow down"></i>
+                </a>
+                <div class="dropdown-content">
+                    <a href="{{ url_for('change_password') }}">Change Password</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+
+    <style>
+        /* You can move this to your main style.css file */
+        .navbar-logout {
+            color: white;
+            text-decoration: none;
+            padding: 21px 20px;
+            margin-left: auto;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .navbar-logout:hover {
+            background-color: #1d4ed8;
+        }
+
+        .navbar ul {
+            margin-left: 0;
+        }
+
+        .navbar-right {
+            margin-left: auto;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .arrow {
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+            transform: rotate(45deg);
+        }
+    </style>
+
+    <!-- File: templates/layout.html -->
+    <main>
+        {# --- REPLACE your old flash message block with this one --- #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div id="flash-messages">
+            {% for category, message in messages %}
+            {# The category ('success', 'error') is used as a CSS class #}
+            <div class="flash {{ category }}">{{ message|safe }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2025 PRIME SUPERMARKET, All rights reserved.</p>
+        <p>Rental Space Management System (RSMS) V1.0</p>
+    </footer>
+    <!-- END: Add the new footer -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+
+</html>

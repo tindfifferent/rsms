@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+{% block title %}Booking Details{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="header-with-action">
+        <h1>Booking Details</h1>
+    </div>
+
+    <!-- Filter Form - Reverted to a clean, stacked layout -->
+    <form method="get" action="{{ url_for('list_bookings') }}" class="styled-form filter-form">
+        <div class="form-group">
+            <label for="fuzzy_search_term">Searched by Booking #</label>
+            <input type="text" id="fuzzy_search_term" name="fuzzy_search_term" value="{{ fuzzy_search_term or '' }}"
+                placeholder="e.g., 123 or 000123">
+        </div>
+        <div class="form-group">
+            <label for="location_select">Location:</label>
+            <select name="filter_location" id="location_select">
+                <option value="">All</option>
+                {% for loc in locations %}
+                <option value="{{ loc.name }}" {% if filter_location==loc.name %}selected{% endif %}>{{ loc.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="space_select">Space:</label>
+            <select name="filter_space" id="space_select">
+                <option value="">All</option>
+                <!-- This will be populated by JavaScript -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="filter_start">Start Date:</label>
+            <input type="date" id="filter_start" name="filter_start" value="{{ filter_start }}">
+        </div>
+        <div class="form-group">
+            <label for="filter_end">End Date:</label>
+            <input type="date" id="filter_end" name="filter_end" value="{{ filter_end }}">
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Filter</button>
+        </div>
+    </form>
+
+    <!-- Results Section -->
+    {% if show_results %}
+    <div class="results-summary">
+        Showing <strong>{{ filtered_bookings|length }}</strong> booking(s) for the selected period.
+    </div>
+
+    <div class="table-container management-card">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Booking #</th>
+                    <th>Vendor</th>
+                    <th>Space</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Prorated Fee</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in filtered_bookings %}
+                <tr>
+                    <td>{{ b.booking_number }}</td>
+                    <td>{{ b.client_name }}</td>
+                    <td>{{ b.space_name }}<br><small class="text-muted">{{ b.location_name }}</small></td>
+                    <td>{{ b.start_date }}</td>
+                    <td>{{ b.end_date }}</td>
+                    <td>${{ "%.2f"|format(b.prorated_rental_fee) }}<br><small class="text-muted">({{ b.days_counted }}
+                            days)</small></td>
+                    <td>
+                        <div class="item-actions">
+                            <a href="{{ url_for('edit_booking', booking_id=b.id) }}" class="button-secondary">Edit</a>
+                            <form method="post" action="{{ url_for('delete_booking', booking_id=b.id) }}"
+                                style="display:inline;"
+                                onsubmit="return confirm('Are you sure you want to delete booking #{{ b.booking_number }}?');">
+                                <!-- 
+                        FIXED: Using the new, self-contained, and resilient class.
+                        This will remove the white frame for good.
+                    -->
+                                <button type="submit" class="button-delete-outline">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">No bookings found for the selected criteria.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if pagination.total_pages > 1 %}
+        <div class="pagination">
+            <!-- Link to the Previous Page -->
+            {% if pagination.page > 1 %}
+            <a
+                href="{{ url_for('list_bookings', page=pagination.page - 1, filter_location=filter_location, filter_space=filter_space, filter_start=filter_start, filter_end=filter_end, fuzzy_search_term=fuzzy_search_term) }}">&laquo;
+                Previous</a>
+            {% endif %}
+
+            <!-- Page Number Links -->
+            {% for p in range(1, pagination.total_pages + 1) %}
+            {% if p == pagination.page %}
+            <a class="active">{{ p }}</a>
+            {% else %}
+            <a
+                href="{{ url_for('list_bookings', page=p, filter_location=filter_location, filter_space=filter_space, filter_start=filter_start, filter_end=filter_end, fuzzy_search_term=fuzzy_search_term) }}">{{
+                p }}</a>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Link to the Next Page -->
+            {% if pagination.page < pagination.total_pages %} <a
+                href="{{ url_for('list_bookings', page=pagination.page + 1, filter_location=filter_location, filter_space=filter_space, filter_start=filter_start, filter_end=filter_end, fuzzy_search_term=fuzzy_search_term) }}">
+                Next &raquo;</a>
+                {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        function fetchSpaces(locationName) {
+            if (!locationName) {
+                $('#space_select').empty().append('<option value="">All</option>');
+                return;
+            }
+            $.post("{{ url_for('spaces_for_location') }}", { location_name: locationName }, function (data) {
+                var spaceSelect = $('#space_select');
+                spaceSelect.empty().append('<option value="">All</option>');
+                $.each(data.spaces, function (i, space) {
+                    spaceSelect.append($('<option>', { value: space.name, text: space.name }));
+                });
+                $('#space_select').val("{{ filter_space|e }}");
+            });
+        }
+
+        $('#location_select').change(function () {
+            fetchSpaces($(this).val());
+        });
+
+        if ($('#location_select').val()) {
+            fetchSpaces($('#location_select').val());
+        }
+    });
+</script>
+{% endblock %}

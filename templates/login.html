@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Login - Rental Space Management System{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="System Logo" class="login-logo">
+            <h2>Rental Space Management System</h2>
+            <p>Please sign in to continue</p>
+        </div>
+
+        <form method="post" class="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="button-primary-full">Sign In</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

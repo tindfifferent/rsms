@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>{{ action }} Location</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <nav>
+        <a href="{{ url_for('book_space') }}">Space Booking</a>
+        <a href="{{ url_for('list_bookings') }}">Booking Details</a>
+        <a href="{{ url_for('available_spaces') }}">Space Tracking</a>
+        <a href="{{ url_for('client_revenue') }}">Rental Income</a>
+        <a href="{{ url_for('list_locations') }}">Rental Space Management</a>
+        <a href="{{ url_for('list_clients') }}">Client Management</a>
+    </nav>
+    <h1>{{ action }} Location</h1>
+    <form method="post">
+        <label>Location Name:
+            <input type="text" name="name" value="{{ location.name if location else '' }}" required>
+        </label>
+        <button type="submit">{{ action }}</button>
+        <a href="{{ url_for('list_locations') }}" class="button-link">Cancel</a>
+    </form>
+</body>
+
+</html>

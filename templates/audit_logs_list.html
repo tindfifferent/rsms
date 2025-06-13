@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block title %}Audit Log{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="header-with-action">
+        <h1>Booking Audit Log</h1>
+    </div>
+
+    <div class="management-card">
+        <ul class="item-list">
+            {% for log in audit_logs %}
+            <li class="item-list-row">
+                <div class="item-details">
+                    <span class="item-name">
+                        Booking #: {{ log.booking_number or 'N/A' }}<br>Action: <strong>{{ log.action|capitalize
+                            }}</strong> by {{
+                        log.user.full_name }}
+                    </span>
+                    <span class="item-subtext">
+                        On {{ log.timestamp.strftime('%d-%m-%Y @ %H:%M:%S') }} UTC
+                    </span>
+                    <p style="margin: 0.5rem 0 0; font-size: 0.9em; max-width: 600px;">{{ log.details }}</p>
+                </div>
+
+                {% if log.booking %}
+                <a href="{{ url_for('edit_booking', booking_id=log.booking.id) }}"
+                    class="btn btn-sm btn-outline-secondary">
+                    Edit
+                </a>
+                {% else %}
+                <span class="text-muted">N/A</span>
+                {% endif %}
+            </li>
+            {% else %}
+            <li class="item-list-empty">
+                <p>No booking activities have been logged yet.</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<!-- At the bottom of templates/audit_logs_list.html -->
+<div class="pagination">
+    <!-- Link to the previous page -->
+    {% if pagination.has_prev %}
+    <a href="{{ url_for('list_audit_logs', page=pagination.prev_num) }}">&laquo; Previous</a>
+    {% endif %}
+
+    <!-- Display page numbers -->
+    {% for p in pagination.iter_pages() %}
+    {% if p %}
+    {% if p == pagination.page %}
+    <a class="active">{{ p }}</a>
+    {% else %}
+    <a href="{{ url_for('list_audit_logs', page=p) }}">{{ p }}</a>
+    {% endif %}
+    {% else %}
+    <span class="ellipsis">…</span>
+    {% endif %}
+    {% endfor %}
+
+    <!-- Link to the next page -->
+    {% if pagination.has_next %}
+    <a href="{{ url_for('list_audit_logs', page=pagination.next_num) }}">Next &raquo;</a>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{# The block title will now change based on the action #}
+{% block title %}
+{% if action == 'Edit' %}
+Edit Space
+{% else %}
+Create New Space
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+
+    {# The page header also changes dynamically #}
+    {% if action == 'Edit' %}
+    <h1>Edit Space in {{ location.name }}</h1>
+    <p>Update the name for the space below.</p>
+    {% else %}
+    <h1>Create New Space for {{ location.name }}</h1>
+    <p>Fill out the details below to add a new space to this location.</p>
+    {% endif %}
+
+    {# The form's action URL now points to the correct endpoint for either create or edit #}
+    <form method="POST"
+        action="{{ url_for('edit_space', loc_id=location.id, space_id=space.id) if action == 'Edit' else url_for('create_space', loc_id=location.id) }}"
+        class="styled-form">
+
+        <div class="form-group">
+            <label for="name">Space Name</label>
+            <!-- 
+                This input now pre-populates its value with the existing space name if one is provided.
+                The 'if space else' part makes it safely handle the 'Create' case where 'space' is None.
+            -->
+            <input type="text" id="name" name="name" value="{{ space.name if space else '' }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Save Changes</button>
+            <a href="{{ url_for('list_locations') }}" class="button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

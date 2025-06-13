@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p class="current-date">{{ data.formatted_month }}</p>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Main KPI Card: Current Month's Income -->
+    <div class="card kpi-card main-kpi">
+        <h2 class="card-title">Current Month's Income</h2>
+        <p class="kpi-value">${{ "%.2f"|format(data.current_month_income) }}</p>
+    </div>
+
+    <!-- Space Utilization Card with Progress Bar -->
+    <div class="card kpi-card">
+        <h2 class="card-title">Space Utilization</h2>
+        <p class="kpi-value">{{ "%.1f"|format(data.space_utilization.percentage) }}%</p>
+        <div class="progress-bar-container">
+            <div class="progress-bar" style="width: {{ data.space_utilization.percentage }}%;"></div>
+        </div>
+        <p class="kpi-context">{{ data.space_utilization.booked }} {{ data.space_utilization.total }}</p>
+    </div>
+
+    <!-- Top Vendors Chart Card (Visible to all users) -->
+    <div class="card list-card">
+        <h2 class="card-title">Top Vendors by Income</h2>
+        <div class="chart-container">
+            <canvas id="topVendorsChart"></canvas>
+        </div>
+    </div>
+
+    <!-- 
+        RBAC IMPLEMENTED HERE:
+        This entire card will only be rendered if the logged-in user is an admin.
+    -->
+    {% if current_user.role == 'admin' %}
+    <div class="card list-card">
+        <h2 class="card-title">Top Performing Locations</h2>
+        <div class="chart-container">
+            <canvas id="topLocationsChart"></canvas>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Include Chart.js library from a CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const chartOptions = {
+            indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+            scales: { x: { beginAtZero: true, ticks: { callback: value => '$' + value.toLocaleString() } } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: context => ' Revenue: $' + context.parsed.x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) } } }
+        };
+
+        // Initialize Top Vendors Chart (for all users)
+        new Chart(document.getElementById('topVendorsChart').getContext('2d'), {
+            type: 'bar',
+            data: { labels: {{ data.charts.vendors.labels | tojson }}, datasets: [{ label: 'Income', data: {{ data.charts.vendors.data | tojson }}, backgroundColor: 'rgba(54, 162, 235, 0.6)', borderColor: 'rgba(54, 162, 235, 1)', borderWidth: 1 }] },
+        options: chartOptions
+        });
+
+    // --- RBAC IMPLEMENTED IN JAVASCRIPT ---
+    // Only attempt to create the locations chart if the user is an admin
+    // and the canvas element actually exists in the HTML.
+    {% if current_user.role == 'admin' %}
+    new Chart(document.getElementById('topLocationsChart').getContext('2d'), {
+        type: 'bar',
+        data: { labels: {{ data.charts.locations.labels | tojson }}, datasets: [{ label: 'Income', data: {{ data.charts.locations.data | tojson }}, backgroundColor: 'rgba(75, 192, 192, 0.6)', borderColor: 'rgba(75, 192, 192, 1)', borderWidth: 1 }] },
+        options: chartOptions
+        });
+    {% endif %}
+    });
+</script>
+{% endblock %}

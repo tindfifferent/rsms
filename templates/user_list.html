@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="header-with-action">
+        <h1>User Management</h1>
+        <a href="{{ url_for('create_user') }}" class="button-primary">Create New User</a>
+    </div>
+
+    <div class="management-card">
+        <ul class="item-list">
+            {% for user in users %}
+            <li class="item-list-row">
+                <div class="item-details">
+                    <span class="item-name">{{ user.full_name }}</span>
+                    <span class="item-subtext">{{ user.email }} (Role: {{ user.role|capitalize }})</span>
+                </div>
+                <a href="{{ url_for('edit_user', user_id=user.id) }}" class="button-secondary button-small">Edit</a>
+            </li>
+            {% else %}
+            <li class="item-list-empty">
+                <p>No users have been created yet.</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

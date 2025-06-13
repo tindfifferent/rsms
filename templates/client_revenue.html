@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block title %}Rental Income by Vendor{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="header-with-action">
+        <h1>Rental Income by Vendor</h1>
+    </div>
+
+    <!-- Filter Form with improved styling and structure -->
+    <form method="get" class="styled-form filter-form">
+        <div class="form-group">
+            <label for="location_select">Location:</label>
+            <select name="filter_location" id="location_select">
+                <option value="">All Locations</option>
+                {% for loc in locations %}
+                <option value="{{ loc.name }}" {% if filter_location==loc.name %}selected{% endif %}>{{ loc.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="client_select">Vendor:</label>
+            <select name="filter_client" id="client_select">
+                <option value="">All Vendors</option>
+                {% for client in clients %}
+                <option value="{{ client.id }}" {% if filter_client|string==client.id|string %}selected{% endif %}>{{
+                    client.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="start_date_input">Start Date (Required):</label>
+            <input type="date" id="start_date_input" name="filter_start" value="{{ filter_start }}" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date_input">End Date (Required):</label>
+            <input type="date" id="end_date_input" name="filter_end" value="{{ filter_end }}" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Filter</button>
+        </div>
+    </form>
+
+    {% if show_results %}
+    <!-- Results Summary Section -->
+    <div class="results-summary">
+        <div class="summary-total">
+            <strong>Total Income for Period:</strong>
+            <span>${{ '%.2f'|format(overall_total) }}</span>
+        </div>
+        <a href="{{ url_for('export_client_revenue', 
+                    filter_location=filter_location, 
+                    filter_client=filter_client, 
+                    filter_start=filter_start, 
+                    filter_end=filter_end) }}" class="button-secondary">Export to Excel</a>
+    </div>
+
+    <!-- Card-Based Grid for Results -->
+    <div class="results-grid">
+        {% for client_name, data in revenue_data.items()|sort %}
+        <div class="report-card">
+            <div class="card-header">
+                <h3>{{ client_name }}</h3>
+                <span class="card-subtotal"><b> ${{ '%.2f'|format(data.total) }}</b></span>
+            </div>
+            <div class="card-body">
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th style="text-align: right;">Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for loc_name, revenue in data.locations.items()|sort %}
+                        <tr>
+                            <td>{{ loc_name }}</td>
+                            <td style="text-align: right;">${{ '%.2f'|format(revenue) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not revenue_data %}
+    <div class="empty-state" style="margin-top: 2rem; text-align: center;">
+        <p>No data found for the selected criteria.</p>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
