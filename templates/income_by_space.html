@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% block title %}Income by Space{% endblock %}
+
+{% block content %}
+<div class="management-container">
+    <div class="header-with-action">
+        <h1>Income by Space</h1>
+    </div>
+
+    <!-- Filter Form with improved styling and structure -->
+    <form method="get" class="styled-form filter-form">
+        <div class="form-group">
+            <label for="location_select">Location:</label>
+            <select name="filter_location" id="location_select">
+                <option value="">All Locations</option>
+                {% for loc in locations %}
+                <option value="{{ loc.name }}" {% if filter_location==loc.name %}selected{% endif %}>{{ loc.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="space_select">Space (Optional):</label>
+            <select name="filter_space" id="space_select">
+                <option value="">All Spaces</option>
+                <!-- JavaScript will populate this -->
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="start_date_input">Start Date (Required):</label>
+            <input type="date" id="start_date_input" name="filter_start" value="{{ filter_start }}" required>
+        </div>
+        <div class="form-group">
+            <label for="end_date_input">End Date (Required):</label>
+            <input type="date" id="end_date_input" name="filter_end" value="{{ filter_end }}" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Filter</button>
+        </div>
+    </form>
+
+    {% if show_results %}
+    <!-- Results Summary Section -->
+    <div class="results-summary">
+        <div class="summary-total">
+            <strong>Total Income for Period:</strong>
+            <span>${{ '%.2f'|format(overall_total) }}</span>
+        </div>
+        <a href="{{ url_for('export_income_by_space', 
+                    filter_location=filter_location, 
+                    filter_space=filter_space, 
+                    filter_start=filter_start, 
+                    filter_end=filter_end) }}" class="button-secondary">Export to Excel</a>
+    </div>
+
+    <!-- Card-Based Grid for Results -->
+    <div class="results-grid">
+        {% for location_name, data in report_data.items()|sort %}
+        <div class="report-card">
+            <div class="card-header">
+                <h3>{{ location_name }}</h3>
+                <span class="card-subtotal"><b> ${{ '%.2f'|format(data.location_total) }}</b></span>
+            </div>
+            <div class="card-body">
+                <table class="details-table">
+                    <thead>
+                        <tr>
+                            <th>Space</th>
+                            <th style="text-align: right;">Income</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for space_name, income in data.spaces.items()|sort %}
+                        <tr>
+                            <td>{{ space_name }}</td>
+                            <td style="text-align: right;">${{ '%.2f'|format(income) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if not report_data %}
+    <div class="empty-state" style="margin-top: 2rem; text-align: center;">
+        <p>No data found for the selected criteria.</p>
+    </div>
+    {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        function fetchSpaces(locationName) {
+            if (!locationName) {
+                $('#space_select').empty().append('<option value="">All Spaces</option>').prop('disabled', true);
+                return;
+            }
+            $('#space_select').prop('disabled', false);
+            $.post("{{ url_for('spaces_for_location') }}", { location_name: locationName }, function (data) {
+                var spaceSelect = $('#space_select');
+                spaceSelect.empty().append('<option value="">All Spaces</option>');
+                $.each(data.spaces, function (i, space) {
+                    spaceSelect.append($('<option>', { value: space.name, text: space.name }));
+                });
+                $('#space_select').val("{{ filter_space|e }}");
+            });
+        }
+        $('#location_select').change(function () { fetchSpaces($(this).val()); });
+        if ($('#location_select').val()) { fetchSpaces($('#location_select').val()); }
+        else { $('#space_select').prop('disabled', true); }
+    });
+</script>
+{% endblock %}

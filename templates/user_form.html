@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block title %}{{ action }} User{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ action }} User</h1>
+
+    <!-- Add the 'form-standard' class to apply the new styles -->
+    <form method="post" class="form-standard">
+        <div>
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" value="{{ user.full_name if user else '' }}" required>
+        </div>
+
+        <div>
+            <label for="email">Email Address (for login)</label>
+            <input type="email" id="email" name="email" value="{{ user.email if user else '' }}" required>
+        </div>
+
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" {% if action=="Create" %}required{% endif %}>
+            {% if action == "Edit" %}<small class="form-hint">Leave blank to keep current password.</small>{% endif %}
+        </div>
+
+        <div>
+            <label for="role">Role</label>
+            <select id="role" name="role" required>
+                <option value="user" {% if user and user.role=='user' %}selected{% endif %}>User</option>
+                <option value="admin" {% if user and user.role=='admin' %}selected{% endif %}>Admin</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="locations">Assigned Locations</label>
+            <select id="locations" name="locations" multiple required>
+                {% set assigned_locations = user.locations|map(attribute='id')|list if user else [] %}
+                {% for location in locations %}
+                <option value="{{ location.id }}" {% if location.id in assigned_locations %}selected{% endif %}>
+                    {{ location.name }}
+                </option>
+                {% endfor %}
+            </select>
+            <small class="form-hint">Hold Command/Control to select multiple locations.</small>
+        </div>
+
+        <div class="form-actions">
+            <!-- Apply standardized button classes -->
+            <button type="submit" class="button-primary">{{ action }} User</button>
+            <a href="{{ url_for('list_users') }}" class="button-link-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

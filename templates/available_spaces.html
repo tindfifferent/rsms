@@ -1,0 +1,162 @@
+{% extends "layout.html" %}
+{% block title %}Space Tracking{% endblock %}
+
+{% block content %}
+<h1>Space Tracking</h1>
+
+<!-- This form now has the corrected 'name' attributes -->
+<form method="get" action="{{ url_for('available_spaces') }}">
+    <label>Location:
+        <select name="filter_location" id="location_select">
+            <option value="">All Locations</option>
+            {% for loc in locations %}
+            <option value="{{ loc.name }}" {% if filter_location==loc.name %}selected{% endif %}>{{ loc.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Space:
+        <select name="filter_space" id="space_select">
+            <option value="">All Spaces</option>
+        </select>
+    </label>
+
+    <!-- THE FIX IS HERE: The 'name' attributes are now correct -->
+    <label>Start Date: <input type="date" name="filter_start" value="{{ filter_start }}" required></label>
+    <label>End Date: <input type="date" name="filter_end" value="{{ filter_end }}" required></label>
+
+    <button type="submit">Filter</button>
+</form>
+
+{% if show_results %}
+<hr>
+
+{% if calendar_events %}
+<div class="management-card" style="margin-bottom: 2rem;">
+    <h3 style="padding: 1rem 1.5rem 0; margin: 0;">Space Booking Calendar</h3>
+    <div id="calendar-chart"></div>
+</div>
+{% endif %}
+
+<div class="report-summary">
+    {% if under_utilised_summary %}
+    <div>
+        <h2>Outlet Rental Space Utilisation Summary</h2>
+        <ul>
+            {% for location, count in under_utilised_summary.items() %}
+            <li><strong>{{ location }}:</strong> {{ count }} space(s) under-utilised</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    <a href="{{ url_for('export_space_tracking', 
+                    filter_location=filter_location,
+                    filter_space=filter_space,
+                    filter_start=filter_start,
+                    filter_end=filter_end) }}" class="button-link">Export to Excel</a>
+
+</div>
+
+{% if grouped_space_data %}
+{% for location_name, spaces_in_location in grouped_space_data.items()|sort %}
+<div class="location-group">
+    <h3>{{ location_name }}</h3>
+    <ul>
+        {% for item in spaces_in_location %}
+        <li>
+            <strong>{{ item.space_name }}</strong>:
+            {% if item.is_available %}
+            <span class="unavailable">Fully Available</span>
+            {% elif item.unbooked_days == 0 %}
+            <span class="available">Fully Booked</span>
+            {% else %}
+            Unbooked for <strong>{{ item.unbooked_days }}</strong> day(s).
+            {% endif %}
+            <br>
+            <small>Available Ranges: {{ ", ".join(item.unbooked_ranges) if item.unbooked_ranges else "None" }}</small>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% else %}
+<div class="location-group">
+    <p>No spaces found for the selected criteria.</p>
+</div>
+{% endif %}
+
+{% else %}
+<div class="empty-state-prompt">
+    <p>Use the filters above and click "Filter" to track space availability.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Include the Plotly.js charting library -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<script>
+    // --- Dependent Dropdown Script (This remains the same) ---
+    $(document).ready(function () {
+        function fetchSpaces(locationName) {
+            if (!locationName) {
+                $('#space_select').empty().append('<option value="">All Spaces</option>').prop('disabled', true);
+                return;
+            }
+            $('#space_select').prop('disabled', false);
+            $.post("{{ url_for('spaces_for_location') }}", { location_name: locationName }, function (data) {
+                var spaceSelect = $('#space_select');
+                spaceSelect.empty().append('<option value="">All Spaces</option>');
+                $.each(data.spaces, function (i, space) {
+                    spaceSelect.append($('<option>', { value: space.name, text: space.name }));
+                });
+                $('#space_select').val("{{ filter_space|e }}");
+            });
+        }
+        $('#location_select').change(function () { fetchSpaces($(this).val()); });
+        if ($('#location_select').val()) { fetchSpaces($('#location_select').val()); }
+        else { $('#space_select').prop('disabled', true); }
+    });
+
+    // --- Chart Rendering Script (This is the definitive fix) ---
+    {% if calendar_events %}
+    (function () {
+        const events = {{ calendar_events| tojson
+    }};
+    if (events.length === 0) return;
+    const spaceLabels = [...new Set(events.map(e => e.space_label))].sort();
+    const dates = [...new Set(events.map(e => e.date))].sort();
+    const statusMap = { 'unbooked': 0, 'booked': 1 };
+    const statusLookup = {};
+    events.forEach(e => { statusLookup[`${e.space_label}-${e.date}`] = statusMap[e.status]; });
+    const z = spaceLabels.map(label => dates.map(date => statusLookup[`${label}-${date}`] || 0));
+
+    // --- THE FIX IS HERE (1/2): Updated data configuration ---
+    const data = [{
+        z: z,
+        x: dates,
+        y: spaceLabels,
+        type: 'heatmap',
+        colorscale: [[0, '#A8D5BA'], [1, '#D9534F']], // Green for Unbooked, Red for Booked
+        colorbar: { title: 'Status', tickvals: [0, 1], ticktext: ['Unbooked', 'Booked'] },
+        hoverongaps: false,
+        xgap: 2, // Creates a 2px horizontal gap between cells
+        ygap: 2  // Creates a 2px vertical gap between cells
+    }];
+
+    // --- THE FIX IS HERE (2/2): Updated layout configuration ---
+    const layout = {
+        title: 'Space Availability Heatmap',
+        xaxis: { title: 'Date' },
+        yaxis: { title: 'Space', automargin: true },
+        height: 150 + (spaceLabels.length * 40),
+        margin: { t: 50, b: 50, l: 250 },
+        plot_bgcolor: '#FFFFFF' // Sets the color of the gaps to white, creating the grid effect
+    };
+
+    Plotly.newPlot('calendar-chart', data, layout, { responsive: true });
+}) ();
+    {% endif %}
+</script>
+{% endblock %}

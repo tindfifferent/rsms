@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{% if action == 'Create' %}
+Add New Vendor
+{% else %}
+Edit Vendor
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+
+    {% if action == 'Create' %}
+    <h1>Add New Vendor</h1>
+    <p>Enter a unique code and name for the new vendor.</p>
+    {% else %}
+    <h1>Edit Vendor</h1>
+    <p>Update the vendor's code and name below.</p>
+    {% endif %}
+
+    <form method="POST"
+        action="{{ url_for('edit_client', client_id=client.id) if client else url_for('create_client') }}"
+        class="styled-form">
+
+        <!-- Vendor Code Field -->
+        <div class="form-group">
+            <label for="code">Vendor Code</label>
+            <input type="text" id="code" name="code" value="{{ client.code if client else '' }}" required>
+        </div>
+
+        <!-- Vendor Name Field -->
+        <div class="form-group">
+            <label for="name">Vendor Name</label>
+            <input type="text" id="name" name="name" value="{{ client.name if client else '' }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Save Vendor</button>
+            <a href="{{ url_for('list_clients') }}" class="button-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

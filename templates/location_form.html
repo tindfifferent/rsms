@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}{{ action }} Location{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>{{ action }} Location</h1>
+
+    <form method="post" class="form-standard">
+        <div>
+            <label for="name">Location Name</label>
+            <!-- 
+                This is the key change. The 'value' attribute will now be populated 
+                with the user's last input if validation fails.
+            -->
+            <input type="text" id="name" name="name"
+                value="{{ name if name is not none else (location.name if location else '') }}" required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="button-primary">{{ action }} Location</button>
+            <a href="{{ url_for('list_locations') }}" class="button-link-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

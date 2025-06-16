@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+{% block title %}Edit Booking{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Edit Booking</h1>
+    <form method="post" class="form-standard">
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" value="{{ booking.space.location.name }}" disabled>
+        </div>
+
+        <div>
+            <label for="space_select">Space</label>
+            <!-- THE FIX IS HERE: The name attribute must be 'space_id' -->
+            <select id="space_select" name="space_id" required>
+                {% for space_option in spaces %}
+                <option value="{{ space_option.id }}" {% if space_option.id==booking.space_id %}selected{% endif %}>
+                    {{ space_option.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="client_select">Client</label>
+            <!-- THE FIX IS HERE: The name attribute must be 'client_id' -->
+            <select id="client_select" name="client_id" required>
+                {% for client_option in clients %}
+                <option value="{{ client_option.id }}" {% if client_option.id==booking.client_id %}selected{% endif %}>
+                    {{ client_option.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="start_date">Start Date</label>
+            <input type="date" id="start_date" name="start_date" value="{{ booking.start_date.strftime('%Y-%m-%d') }}"
+                required>
+        </div>
+
+        <div>
+            <label for="end_date">End Date</label>
+            <input type="date" id="end_date" name="end_date" value="{{ booking.end_date.strftime('%Y-%m-%d') }}"
+                required>
+        </div>
+
+        <div>
+            <label for="rental_fee">Rental Fee</label>
+            <input type="number" step="0.01" id="rental_fee" name="rental_fee" value="{{ booking.rental_fee }}"
+                required>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="button-primary">Save Changes</button>
+            <a href="{{ url_for('list_bookings') }}" class="button-link-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

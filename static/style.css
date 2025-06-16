@@ -1,0 +1,1703 @@
+body {
+    background: #f4f6fa;
+    color: #222;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background: #05622f;
+    padding: 16px 24px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: #FFF;
+    text-decoration: none;
+    margin-right: 24px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+nav a:hover {
+    color: #a5b4fc;
+}
+
+h1,
+h2 {
+    color: #05622f;
+}
+
+form {
+    background: #fff;
+    padding: 24px;
+    margin: 24px 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+    max-width: 480px;
+}
+
+label {
+    display: block;
+    margin: 12px 0 8px;
+    color: #374151;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    margin-bottom: 16px;
+    font-size: 1em;
+    background: #f8fafc;
+}
+
+button {
+    border: none;
+    /* Removes all borders, including white borders */
+    outline: none;
+    /* Removes the focus outline (optional, see note below) */
+    background: #05622f;
+    /* Or your preferred color */
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+button:hover {
+    background: #1d4ed8;
+}
+
+ul {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+    max-width: 600px;
+    margin: 24px 0;
+}
+
+li {
+    margin-bottom: 12px;
+    color: #374151;
+}
+
+.flash {
+    background: #fde68a;
+    color: #b45309;
+    border: 1px solid #fbbf24;
+    padding: 10px 18px;
+    border-radius: 4px;
+    margin: 18px 0;
+    max-width: 480px;
+}
+
+a.button-link {
+    background: #fff;
+    color: #05622f;
+    border: 1px solid #05622f;
+    padding: 6px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+
+a.button-link:hover {
+    background: #05622f;
+    color: #fff;
+}
+
+.available {
+    color: #059669;
+    font-weight: bold;
+}
+
+.unavailable {
+    color: #b91c1c;
+    font-weight: bold;
+}
+
+.booking-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.divider {
+    border-bottom: 2px solid #ccc;
+    margin: 10px 0;
+}
+
+/* General style for all flash messages */
+.flash {
+    padding: 1rem;
+    margin: 1rem 0;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+/* Specific style for SUCCESS messages */
+.flash.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+/* You can also add styles for error messages */
+.flash.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.
+
+/* The main navigation bar container */
+.navbar {
+    background: #05622f;
+    /* Your primary blue */
+    margin-bottom: 32px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow: visible;
+}
+
+/* Override your generic 'ul' style for the navigation menu itself */
+.navbar ul {
+    display: flex;
+    /* Aligns top-level items horizontally */
+    list-style-type: none;
+    margin: 0;
+    padding: 0 16px;
+    /* Provides padding on the sides of the nav bar */
+    background: none;
+    /* Removes white background from generic ul style */
+    box-shadow: none;
+    /* Removes shadow from generic ul style */
+    max-width: none;
+    /* Allows nav to be full width */
+}
+
+/* The container for each dropdown group (e.g., Bookings, Reports) */
+.navbar .dropdown {
+    /* This is the anchor for positioning the dropdown menu */
+    position: relative;
+    position: relative;
+    display: inline-block;
+}
+
+/* The clickable top-level menu items */
+.navbar .dropbtn {
+    display: block;
+    color: #FFF;
+    text-decoration: none;
+    padding: 5px 20px;
+    /* Defines the height of the nav bar */
+    font-weight: 500;
+    transition: background-color 0.2s;
+    cursor: pointer;
+    white-space: nowrap;
+    /* Prevents menu items from wrapping */
+}
+
+/* Hover effect for the top-level menu items */
+.navbar .dropdown:hover .dropbtn {
+    background-color: #11AE50;
+    /* Your darker blue for hover */
+}
+
+/* The dropdown menu panel (the white box) */
+.dropdown-content {
+    /* CRITICAL: Hide the dropdown menu by default */
+    display: none;
+
+    /* CRITICAL: Position it relative to the .dropdown container */
+    position: absolute;
+
+    background-color: #fff;
+    min-width: 200px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    z-index: 1;
+    right: 0;
+    /* Align to the right edge of the user menu */
+    top: 100%;
+    /* Position it directly below the navbar */
+    /* Ensures it appears on top of other content */
+    border-radius: 0 0 8px 8px;
+    /* Rounded bottom corners */
+    border: 1px solid #e2e8f0;
+    /* Adds a subtle border */
+}
+
+/* Links inside the dropdown menu */
+.dropdown-content a {
+    color: #05622f;
+    /* Your primary blue text */
+    padding: 12px 18px;
+    text-decoration: none;
+    display: block;
+    font-weight: 500;
+}
+
+/* Hover effect for links inside the dropdown */
+.dropdown-content a:hover {
+    background-color: #eef2ff;
+    color: #1d4ed8;
+}
+
+/* This is the magic rule that makes the menu appear on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.booking-actions form {
+    /* Reset all visual styles */
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+
+    /* Ensure it doesn't have a max-width */
+    max-width: none;
+
+    /* This keeps it on the same line as the Edit button */
+    display: inline-block;
+}
+
+main {
+    /* 
+       This applies padding to the main content area.
+       The order is: top | right & left | bottom 
+    */
+    padding: 16px 24px 24px;
+}
+
+footer {
+    /* Horizontally centers the text inside the footer */
+    text-align: center;
+
+    /* Adds space between the main content and the top of the footer */
+    margin-top: 48px;
+
+    /* Adds space above and below the footer text */
+    padding: 24px 0;
+
+    /* A subtle top border to visually separate it from the page content */
+    border-top: 1px solid #e2e8f0;
+
+    /* A muted gray color for the text that matches your theme */
+    color: #64748b;
+    font-size: 0.9em;
+}
+
+/* Reduces the default spacing between the two lines of text */
+footer p {
+    margin: 4px 0;
+}
+
+.month-title {
+    color: #64748b;
+    font-weight: 500;
+    font-size: 0.8em;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.dashboard-card {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+}
+
+.dashboard-card h3 {
+    margin-top: 0;
+    color: #374151;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 12px;
+}
+
+.dashboard-card .metric-value {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #05622f;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.dashboard-card .metric-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    box-shadow: none;
+    max-width: none;
+}
+
+.dashboard-card .metric-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.dashboard-card .metric-list li:last-child {
+    border-bottom: none;
+}
+
+.dashboard-card .item-name {
+    font-weight: 500;
+    color: #475569;
+}
+
+.dashboard-card .item-value {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.management-card {
+    background: #fff;
+    padding: 24px;
+    margin-bottom: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+}
+
+.location-name {
+    margin: 0;
+    color: #1e293b;
+}
+
+.space-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    box-shadow: none;
+    max-width: none;
+}
+
+.space-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.add-space-action {
+    padding-top: 16px;
+}
+
+.add-space-action a {
+    font-weight: 500;
+    text-decoration: none;
+    color: #2563eb;
+}
+
+.button-link-subtle {
+    font-size: 0.9em;
+    font-weight: 500;
+    text-decoration: none;
+    color: #475569;
+    border: 1px solid #cbd5e1;
+    padding: 4px 12px;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.button-link-subtle:hover {
+    background-color: #f1f5f9;
+    color: #1e293b;
+}
+
+.flash {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    /* Matches your card style */
+    font-weight: 500;
+}
+
+/* Specific style for SUCCESS messages (green) */
+.flash.success {
+    color: #155724;
+    /* Dark green text */
+    background-color: #d4edda;
+    /* Light green background */
+    border-color: #c3e6cb;
+    /* Slightly darker green border */
+}
+
+/* Specific style for ERROR messages (red) */
+.flash.error {
+    color: #721c24;
+    /* Dark red text */
+    background-color: #f8d7da;
+    /* Light red background */
+    border-color: #f5c6cb;
+    /* Slightly darker red border */
+}
+
+.system-header {
+    text-align: center;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #e2e8f0;
+    /* Adds a subtle separator line */
+}
+
+.system-header h2 {
+    margin: 0;
+    color: #05622f;
+    /* A darker, professional blue from your theme */
+    font-size: 1.75em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    /* Adds a bit of spacing for a cleaner look */
+}
+
+.report-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.location-group {
+    background: #fff;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.07);
+}
+
+.location-group h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.location-group ul {
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    list-style: none;
+}
+
+.location-group li {
+    padding: 0.5rem 0;
+}
+
+.empty-state-prompt {
+    text-align: center;
+    padding: 48px;
+    margin-top: 24px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: #64748b;
+}
+
+.navbar-logout {
+    color: white;
+    text-decoration: none;
+    padding: 16px;
+    margin-left: auto;
+}
+
+.navbar-logout:hover {
+    background-color: #c3e6cb;
+}
+
+/* Adjust navbar ul to not push logout link away */
+.navbar ul {
+    margin-left: 0;
+}
+
+body {
+    background-color: #f1f5f9;
+    /* Light gray-blue background */
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    /* Use viewport height to help center vertically */
+    padding: 2rem 0;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 2.5rem;
+    /* 40px */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 10px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
+
+.login-header .login-logo {
+    width: 64px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.login-header h2 {
+    font-size: 1.5em;
+    /* 24px */
+    color: #1e293b;
+    /* Dark slate text */
+    margin: 0 0 0.5rem;
+}
+
+.login-header p {
+    color: #64748b;
+    /* Lighter slate text for subheading */
+    margin-bottom: 2rem;
+}
+
+.login-form .form-group {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.login-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    /* Ensures padding doesn't affect width */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-form input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.button-primary-full {
+    width: 100%;
+    padding: 14px;
+    font-size: 1em;
+    font-weight: 600;
+    background-color: #05622f;
+    /* A strong, professional blue */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+}
+
+.button-primary-full:hover {
+    background-color: #c3e6cb;
+    /* Darker blue on hover */
+}
+
+.form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.form-container h1 {
+    margin-top: 0;
+}
+
+.form-standard div {
+    margin-bottom: 1.25rem;
+}
+
+.form-standard label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #334155;
+}
+
+.form-standard input[type="text"],
+.form-standard input[type="email"],
+.form-standard input[type="password"],
+.form-standard select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+    /* Ensures padding doesn't affect width */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-standard select[multiple] {
+    height: auto;
+    /* Allow multiple select to grow */
+    min-height: 120px;
+}
+
+.form-standard input:focus,
+.form-standard select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.875em;
+    color: #64748b;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 1.5rem;
+}
+
+.button-primary {
+    padding: 12px 24px;
+    font-size: 1em;
+    font-weight: 600;
+    background-color: #05622f;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+    background-color: #c3e6cb;
+}
+
+.button-link-secondary {
+    font-weight: 600;
+    color: #475569;
+    text-decoration: none;
+    padding: 12px 0;
+}
+
+.button-link-secondary:hover {
+    text-decoration: underline;
+}
+
+.management-container {
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+.header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header-with-action h1 {
+    margin: 0;
+}
+
+.management-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    /* Ensures child rounded corners are visible */
+}
+
+.item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.item-list-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.item-list-row:last-child {
+    border-bottom: none;
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.item-subtext {
+    color: #64748b;
+    font-size: 0.875em;
+    margin-top: 0.25rem;
+}
+
+.item-list-empty {
+    padding: 2rem;
+    text-align: center;
+    color: #64748b;
+}
+
+.location-group {
+    /* A group is a container for a location header and its sublist of spaces */
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.location-group:last-child {
+    border-bottom: none;
+}
+
+.location-header {
+    /* Make the location header stand out slightly */
+    background-color: #f8fafc;
+    border-bottom: none;
+    /* The group container handles the border */
+}
+
+.item-actions {
+    /* Group the action links together */
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.button-link-subtle {
+    font-weight: 600;
+    color: #05622f;
+    text-decoration: none;
+    font-size: 0.875em;
+}
+
+.button-link-subtle:hover {
+    text-decoration: underline;
+}
+
+.space-sublist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 2rem;
+    /* Indent the entire sublist */
+    border-left: 2px solid #e2e8f0;
+}
+
+.space-sublist .item-list-row {
+    border-top: 1px dashed #e2e8f0;
+    /* Use a dashed border for sub-items */
+    border-bottom: none;
+}
+
+.sublist-empty {
+    padding: 1rem 1.5rem;
+    font-size: 0.875em;
+    text-align: left;
+}
+
+.button-secondary {
+    background-color: transparent;
+    /* Make background see-through */
+    color: #05622f;
+    /* Dark gray text for good contrast */
+    border: 2px solid #05622f;
+    /* A subtle, matching border */
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    /* Smooth transition for hover */
+    text-decoration: none;
+    /* Remove underline from the link */
+}
+
+.button-secondary:hover {
+    background-color: #05622f;
+    ;
+    /* Fill with the dark gray color on hover */
+    color: white;
+    /* Make text white on hover */
+    border-color: #05622f;
+    ;
+    /* Match border color on hover */
+    text-decoration: none;
+}
+
+.filter-form .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+}
+
+.filter-form .form-group {
+    margin-bottom: 0;
+}
+
+.filter-form .form-actions {
+    padding-bottom: 0.2rem;
+    /* Aligns button with inputs */
+}
+
+/* --- Results Summary --- */
+.results-summary {
+    margin: 2rem 0 1rem 0;
+    padding: 1rem;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* --- Styled Table --- */
+.table-container {
+    padding: 0;
+    /* Remove padding for edge-to-edge table */
+}
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.styled-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.text-muted {
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* --- Filter Form Enhancements --- */
+.filter-form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    /* Add space between the filter and the results */
+}
+
+/* Ensure each form group in the filter has consistent spacing */
+.filter-form .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-form .form-actions {
+    margin-top: 1rem;
+    /* Adjust top margin for the button */
+}
+
+.button-delete-outline {
+    /* 1. Explicitly reset browser default styles */
+    background: transparent;
+    -webkit-appearance: none;
+    /* Removes default iOS styling */
+    -moz-appearance: none;
+    /* Removes default Firefox styling */
+    appearance: none;
+    /* Standard property to remove browser styling */
+
+    /* 2. Define the red outline and text color */
+    border: 2px solid #dc3545;
+    color: #dc3545;
+
+    /* 3. Define consistent size, shape, and font */
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1;
+    /* Helps with vertical text alignment */
+    transition: all 0.2s ease-in-out;
+}
+
+.button-delete-outline:hover {
+    /* 4. On hover, fill the button with red */
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+    /* Make text white for contrast */
+    text-decoration: none;
+}
+
+.item-actions form {
+    /* This makes the form element flow inline with other items */
+    /* and prevents it from creating a block with a background. */
+    display: inline-block;
+
+    /* Reset any unwanted margins or padding */
+    margin: 0;
+    padding: 0;
+}
+
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* --- Location Card Styling --- */
+.location-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.card-title h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.space-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.card-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* --- Detailed Space List inside Card --- */
+.space-list-detailed {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.space-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.space-item:last-child {
+    border-bottom: none;
+}
+
+.space-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.space-name {
+    font-weight: 500;
+}
+
+.space-status-text {
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* --- Status Indicator Dots --- */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.status-available {
+    background-color: #28a745;
+    /* Green */
+}
+
+.status-dot.status-booked {
+    background-color: #dc3545;
+    /* Red */
+}
+
+/* --- Smaller Buttons for Card Actions --- */
+.button-primary-small,
+.button-secondary-small {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid transparent;
+    transition: background-color 0.2s;
+}
+
+.button-primary-small {
+    background-color: #007bff;
+}
+
+.button-primary-small:hover {
+    background-color: #0056b3;
+    text-decoration: none;
+}
+
+.button-secondary-small {
+    background-color: #6c757d;
+}
+
+.button-secondary-small:hover {
+    background-color: #5a6268;
+    text-decoration: none;
+}
+
+/* --- Grid Layout for Locations --- */
+.location-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    /* Responsive grid */
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+/* --- Location Card Styling --- */
+.location-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.card-title h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.space-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.card-body {
+    padding: 0.5rem 1.5rem 1.5rem 1.5rem;
+}
+
+/* --- Detailed Space List inside Card --- */
+.space-list-detailed {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.space-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.space-item:last-child {
+    border-bottom: none;
+}
+
+.space-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.space-name {
+    font-weight: 500;
+}
+
+/* --- Status Indicator Dots --- */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.status-dot.status-available {
+    background-color: #28a745;
+    /* Green */
+}
+
+.status-dot.status-booked {
+    background-color: #dc3545;
+    /* Red */
+}
+
+/* --- Smaller Buttons for Card Actions --- */
+.button-small {
+    padding: 0.3rem 0.8rem !important;
+    /* Use !important to override generic button styles if needed */
+    font-size: 0.85rem !important;
+}
+
+/* --- Empty State Styling --- */
+.empty-state,
+.empty-state-full-width {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+}
+
+.empty-state-full-width {
+    grid-column: 1 / -1;
+    /* Make it span the full grid width */
+}
+
+/* --- Pagination Styling --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+}
+
+.pagination a {
+    color: #007bff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination a:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.pagination a.active {
+    background-color: #05622f;
+    color: white;
+    border-color: #05622f;
+    cursor: default;
+}
+
+.pagination a.disabled {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #f8f9fa;
+}
+
+/* --- Dashboard Header --- */
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+    margin: 0;
+}
+
+.current-date {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* --- Dashboard Grid Layout --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* --- General Card Styling --- */
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #495057;
+    margin: 0 0 1rem 0;
+}
+
+/* --- KPI Card Styling (for large numbers) --- */
+.kpi-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 0;
+}
+
+.main-kpi .kpi-value {
+    color: #28a745;
+    /* Green for main income */
+}
+
+.kpi-context {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: auto;
+    /* Pushes context to the bottom */
+}
+
+/* --- List Card Styling (for Top Vendors/Locations) --- */
+.data-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.data-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.data-list-item:last-child {
+    border-bottom: none;
+}
+
+.list-value {
+    font-weight: 500;
+}
+
+.empty-state {
+    color: #6c757d;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+/* --- Progress Bar for Utilization --- */
+.progress-bar-container {
+    width: 100%;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    height: 8px;
+    margin: 1rem 0 0.5rem 0;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #007bff;
+    /* Blue for utilization */
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+.chart-container {
+    position: relative;
+    height: 250px;
+    /* Give the container a fixed height */
+}
+
+/* --- Page Layout & Header --- */
+/* The main container for the page, providing padding and a max-width */
+.management-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+}
+
+/* Styles the header to align the title and any action buttons */
+.header-with-action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+.header-with-action h1 {
+    margin: 0;
+}
+
+/* --- Filter Form Styling --- */
+/* A clean, vertical layout for filter inputs */
+.filter-form.styled-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.filter-form.styled-form .form-actions {
+    margin-top: 1.5rem;
+}
+
+/* --- Results Summary Feedback --- */
+/* This style makes the summary stand out, giving clear feedback on the search */
+.results-summary {
+    background-color: #e9ecef;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    border: 1px solid #dee2e6;
+}
+
+/* --- Styled Table for Results --- */
+/* The card container for the table */
+.management-card {
+    background: white;
+    padding: 0;
+    /* Remove padding to allow the table to fill the card */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    /* Ensures the table corners are rounded with the card */
+}
+
+/* The main table styling for readability and a modern look */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Removes gaps between cells */
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid #e9ecef;
+    /* Subtle horizontal lines */
+}
+
+/* Header row styling */
+.styled-table thead th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom-width: 2px;
+}
+
+/* Table body styling */
+.styled-table tbody tr {
+    transition: background-color 0.2s ease-in-out;
+}
+
+.styled-table tbody tr:hover {
+    background-color: #f1f3f5;
+    /* Adds a hover effect for better UX */
+}
+
+.styled-table tbody tr:last-child td {
+    border-bottom: none;
+    /* Removes the border from the very last row */
+}
+
+/* Styling for the action buttons within the table */
+.styled-table .button-secondary {
+    padding: 0.3rem 0.8rem;
+    /* Makes the button smaller to fit neatly in the table */
+    font-size: 0.85rem;
+}
+
+/* Add this to the end of static/style.css */
+
+/* --- Financial Report Styling --- */
+.results-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    border: 1px solid #dee2e6;
+}
+
+.summary-total {
+    font-size: 1.2rem;
+}
+
+.summary-total span {
+    font-weight: 600;
+    color: #28a745;
+    /* Green for positive income */
+}
+
+/* --- Results Grid Layout --- */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    /* Responsive grid */
+    gap: 2rem;
+}
+
+/* --- Report Card Styling --- */
+.report-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-card .card-header {
+    padding: 1rem 1.5rem;
+    background-color: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-card .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.card-subtotal {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.report-card .card-body {
+    padding: 0;
+    /* No padding to let the table fill the space */
+}
+
+/* --- Nested Details Table --- */
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table th,
+.details-table td {
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.details-table thead th {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.details-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --- Financial Report Styling --- */
+/* This block can be shared across all your financial report pages */
+.results-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    border: 1px solid #dee2e6;
+}
+
+.summary-total {
+    font-size: 1.2rem;
+}
+
+.summary-total span {
+    font-weight: 600;
+    color: #28a745;
+    /* Green for positive income */
+}
+
+/* --- Results Grid Layout --- */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    /* Responsive grid */
+    gap: 2rem;
+}
+
+/* --- Report Card Styling --- */
+.report-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-card .card-header {
+    padding: 1rem 1.5rem;
+    background-color: #f1f3f5;
+    border-bottom: 1px solid #dee2e6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.report-card .card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.card-subtotal {
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.report-card .card-body {
+    padding: 0;
+    /* No padding to let the table fill the space */
+}
+
+/* --- Nested Details Table --- */
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table th,
+.details-table td {
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.details-table thead th {
+    font-weight: 600;
+    color: #6c757d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.details-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.report-card .card-header h3 {
+    color: #05622f;
+    /* Applies the new dark green color */
+}
+
+/* This targets the subtotal value in the card header. */
+.report-gcard .card-subtotal {
+    color: #05622f;
+    /* Applies the new dark green color */
+    font-weight: 600;
+    /* Makes the subtotal slightly bolder for emphasis */
+}
