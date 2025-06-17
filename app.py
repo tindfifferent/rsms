@@ -1770,4 +1770,4 @@ if __name__ == '__main__':
     with app.app_context():
         # This is for development. In production, use Flask-Migrate commands.
         db.create_all()
-    app.run(port=5001, debug=True)
+    app.run(port=80, debug=True)
