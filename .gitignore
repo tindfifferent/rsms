@@ -1,0 +1,13 @@
+# .gitignore
+
+# Python
+__pycache__/
+venv/
+*.pyc
+
+# Instance Folder
+instance/
+
+# --- THIS IS THE FIX ---
+# Ignore macOS system files
+.DS_Store
